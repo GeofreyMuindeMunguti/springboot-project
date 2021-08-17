@@ -10,5 +10,7 @@ public interface UserService {
 
     User create(User user);
 
+    User findByUsername(String username);
+
 //    User loadByUserName(String username);
 }

@@ -14,7 +14,7 @@ public class User {
     private UUID Id;
 
 
-    @Column(name= "username")
+    @Column(name= "username", unique=true)
     @NotNull(groups = User.Create.class,
             message = "Username is required")
     private String username;
