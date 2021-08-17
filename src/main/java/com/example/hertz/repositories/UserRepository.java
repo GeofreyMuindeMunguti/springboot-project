@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    User findByUsername(String username);
 }
