@@ -2,11 +2,13 @@ package com.example.hertz.controllers;
 
 import com.example.hertz.models.User;
 import com.example.hertz.services.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "users")
@@ -20,8 +22,8 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getAll(){
-        return userService.getAll();
+    public Page<User> getAll(@RequestParam(defaultValue = "0") Integer page){
+        return userService.getAll(page);
     }
 
     @PostMapping(value="register")
