@@ -1,12 +1,12 @@
 package com.example.hertz.services;
 
 import com.example.hertz.models.User;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
-import java.util.UUID;
+import java.awt.print.Pageable;
 
 public interface UserService {
-    List<User> getAll();
+    Page<User> getAll(Integer page);
 
     User create(User user);
 

@@ -2,11 +2,14 @@ package com.example.hertz.services;
 
 import com.example.hertz.models.User;
 import com.example.hertz.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements  UserService{
+public class UserServiceImpl implements  UserService {
 
     private final UserRepository userRepository;
 
@@ -15,8 +18,9 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public Page<User> getAll(Integer page) {
+        PageRequest pageable = PageRequest.of(0, 10);
+        return userRepository.findAll(pageable);
     }
 
     @Override
