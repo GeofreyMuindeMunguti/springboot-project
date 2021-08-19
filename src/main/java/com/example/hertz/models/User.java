@@ -2,6 +2,8 @@ package com.example.hertz.models;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -23,6 +25,16 @@ public class User {
     @NotNull(groups = User.Create.class,
             message = "Username is required")
     private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    public Set<Role> roles = new HashSet();
+
+    public boolean isEnabled;
 
     public UUID getId() {
         return Id;
@@ -49,13 +61,23 @@ public class User {
         this.password = password;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+
 
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, Set<Role> roles) {
         this.username = username;
         this.password = password;
+        this.roles = roles;
     }
 
     public interface Create{}

@@ -1,14 +1,11 @@
 package com.example.hertz.repositories;
 
 import com.example.hertz.models.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.awt.print.Pageable;
+import java.util.UUID;
 
-public interface UserRepository extends PagingAndSortingRepository<User, Long> {
-
+public interface UserRepository extends PagingAndSortingRepository<User, UUID> {
 
     User findByUsername(String username);
 
