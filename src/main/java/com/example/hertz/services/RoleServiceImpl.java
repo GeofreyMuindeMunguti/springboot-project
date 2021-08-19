@@ -3,8 +3,9 @@ package com.example.hertz.services;
 import com.example.hertz.models.Role;
 import com.example.hertz.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

@@ -1,6 +1,8 @@
 package com.example.hertz.controllers;
 
+import com.example.hertz.models.Role;
 import com.example.hertz.models.User;
+import com.example.hertz.services.RoleService;
 import com.example.hertz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,9 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PreAuthorize("hasRole('Editor')")
@@ -32,7 +37,9 @@ public class UserController {
             @Validated(User.Create.class)
             @RequestBody User user){
         String hashed_password = passwordEncoder.encode(user.getPassword());
+        Role admin_user_role = roleService.getByName("ADMIN");
         user.setPassword(hashed_password);
+        user.roles.add(admin_user_role);
         return userService.create(user);
     }
 
