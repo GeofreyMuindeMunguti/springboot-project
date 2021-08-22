@@ -1,4 +1,4 @@
-package com.example.hertz.models;
+ package com.example.hertz.models;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
@@ -14,7 +14,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private UUID Id;
-
 
     @Column(name= "username", unique=true)
     @NotNull(groups = User.Create.class,
