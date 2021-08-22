@@ -3,6 +3,7 @@ import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private UUID Id;
+
 
     @Column(name= "username", unique=true)
     @NotNull(groups = User.Create.class,
@@ -37,10 +39,6 @@ public class User {
 
     public UUID getId() {
         return Id;
-    }
-
-    public void setId(UUID id) {
-        Id = id;
     }
 
     public String getUsername() {
@@ -67,7 +65,6 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
 
 
     public User() {
