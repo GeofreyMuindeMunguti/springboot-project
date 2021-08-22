@@ -1,7 +1,9 @@
-package com.example.hertz.models;
+ package com.example.hertz.models;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +15,6 @@ public class User {
     @Column(name="id")
     private UUID Id;
 
-
     @Column(name= "username", unique=true)
     @NotNull(groups = User.Create.class,
             message = "Username is required")
@@ -23,6 +24,16 @@ public class User {
     @NotNull(groups = User.Create.class,
             message = "Username is required")
     private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    public Set<Role> roles = new HashSet();
+
+    public boolean isEnabled;
 
     public UUID getId() {
         return Id;
@@ -48,6 +59,15 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 
 
     public User() {
