@@ -57,6 +57,9 @@ public class AuthToken {
         this.user = user;
     }
 
+    public AuthToken() {
+    }
+
     @Override
     public String toString() {
         return "AuthToken{" +
