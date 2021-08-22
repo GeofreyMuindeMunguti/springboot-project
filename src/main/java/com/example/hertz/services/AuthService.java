@@ -1,7 +1,9 @@
 package com.example.hertz.services;
 
 import com.example.hertz.RequestFilters.JwtTokenUtil;
+import com.example.hertz.models.AuthToken;
 import com.example.hertz.models.User;
+import com.example.hertz.repositories.AuthTokenRepository;
 import com.example.hertz.schemas.UserLoginRequest;
 import com.example.hertz.schemas.UserLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,14 @@ public class AuthService {
     @Autowired
     public JwtTokenUtil jwtTokenUtil;
 
+
     public UserLoginResponse authenticate (UserLoginRequest request) {
             boolean authenticate = authenticate(request.getUsername(), request.getPassword());
 
             if (authenticate == true) {
+
                 User user = userService.findByUsername(request.getUsername());
+
                 UserLoginResponse userLoginResponse = new UserLoginResponse(
                         user.getUsername(),
                         jwtTokenUtil.generateToken(user),
@@ -42,4 +47,5 @@ public class AuthService {
         User user = userService.findByUsername(username);
         return passwordEncoder.matches(password, user.getPassword());
     }
+
 }
