@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -32,24 +35,25 @@ public class AuthServiceImpl implements AuthService {
     public UserLoginResponse authenticate (UserLoginRequest request) {
             boolean authenticate = authenticate(request.getUsername(), request.getPassword());
 
-
             if (authenticate == true) {
 
                 User user = userService.findByUsername(request.getUsername());
 
                 List<AuthToken> authTokens = getByUser(user);
+                Integer tokens_length = authTokens.size() - 1;
                 String token = "";
 
+                Date today = new Date();
+
                 if (authTokens.isEmpty()) {
-                    token = jwtTokenUtil.generateToken(user);
-
-                    Date expiryDate = new Date();
-
-                    AuthToken authToken = new AuthToken(token, expiryDate, user);
-                    AuthToken saved = saveToken(authToken);
+                    createAndSaveNewToken(user);
+                }
+                else if (!authTokens.isEmpty() &&
+                        today.after(authTokens.get(tokens_length).getExpiryDate()) ){
+                    createAndSaveNewToken(user);
                 }
                 else {
-                    token = authTokens.get(0).getToken();
+                    token = authTokens.get(tokens_length).getToken();
                 }
 
                 UserLoginResponse userLoginResponse = new UserLoginResponse(
@@ -62,6 +66,20 @@ public class AuthServiceImpl implements AuthService {
             }else {
                 return null;
             }
+    }
+
+    private void createAndSaveNewToken(User user) {
+        String token;
+        token = jwtTokenUtil.generateToken(user);
+
+        Date expiryDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(expiryDate);
+        c.add(Calendar.DATE, 30); // Token expires after this number of days.
+        expiryDate = c.getTime();
+
+        AuthToken authToken = new AuthToken(token, expiryDate, user);
+        AuthToken saved = saveToken(authToken);
     }
 
     private boolean authenticate(String username, String password) {
