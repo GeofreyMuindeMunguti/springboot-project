@@ -71,4 +71,5 @@ public class AuthToken {
 
     public interface Create {}
     public interface Update {}
+
 }

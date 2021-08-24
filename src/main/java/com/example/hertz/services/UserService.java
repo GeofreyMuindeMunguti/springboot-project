@@ -12,5 +12,4 @@ public interface UserService {
 
     User findByUsername(String username);
 
-//    User loadByUserName(String username);
 }
