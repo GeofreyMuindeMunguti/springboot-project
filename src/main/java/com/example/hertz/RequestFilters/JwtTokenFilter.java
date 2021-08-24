@@ -1,9 +1,6 @@
 package com.example.hertz.RequestFilters;
-
-import com.example.hertz.repositories.UserRepository;
 import com.example.hertz.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-
-import static org.hibernate.internal.util.StringHelper.isEmpty;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {

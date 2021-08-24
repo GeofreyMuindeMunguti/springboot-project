@@ -10,7 +10,6 @@ public class UserLoginResponse {
     private String token;
     private Set<Role> roles;
 
-
     public void setUsername(String username) {
         this.username = username;
     }

@@ -16,7 +16,6 @@ public class User {
     @Column(name="id")
     private UUID Id;
 
-
     @Column(name= "username", unique=true)
     @NotNull(groups = User.Create.class,
             message = "Username is required")
@@ -45,7 +44,6 @@ public class User {
         return username;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -65,7 +63,6 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
 
     public User() {
     }

@@ -8,7 +8,6 @@ public class UserLoginRequest {
         return username;
     }
 
-
     public String getPassword() {
         return password;
     }
