@@ -7,8 +7,10 @@ import com.example.hertz.repositories.AuthTokenRepository;
 import com.example.hertz.schemas.UserLoginRequest;
 import com.example.hertz.schemas.UserLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +39,10 @@ public class AuthServiceImpl implements AuthService {
 
                 User user = userService.findByUsername(request.getUsername());
 
+                if(!user.isEnabled)
+                    throw new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "User not Active!");
+
                 List<AuthToken> authTokens = getByUser(user);
                 Integer tokens_length = authTokens.size() - 1;
                 String token = "";
@@ -62,9 +68,9 @@ public class AuthServiceImpl implements AuthService {
 
                 return userLoginResponse;
             }else {
-                return null;
+                throw new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Login failed");
             }
-
     }
 
     private void createAndSaveNewToken(User user) {

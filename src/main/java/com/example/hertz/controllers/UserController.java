@@ -30,8 +30,6 @@ public class UserController {
     @Secured({"ROLE_ADMIN"})
     @GetMapping()
     public Page<User> getAll(@RequestParam(defaultValue = "0") Integer page){
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        System.out.println(authorities);
         return userService.getAll(page);
     }
 
