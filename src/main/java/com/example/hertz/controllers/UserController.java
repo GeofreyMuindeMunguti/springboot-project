@@ -2,11 +2,14 @@ package com.example.hertz.controllers;
 
 import com.example.hertz.models.Role;
 import com.example.hertz.models.User;
+import com.example.hertz.services.MyUserPrincipal;
 import com.example.hertz.services.RoleService;
 import com.example.hertz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "users")
@@ -30,9 +35,13 @@ public class UserController {
     @Secured({"ROLE_ADMIN"})
     @GetMapping()
     public Page<User> getAll(@RequestParam(defaultValue = "0") Integer page){
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        System.out.println(authorities);
         return userService.getAll(page);
+    }
+
+    @PostMapping("/activate")
+    public User activate(@RequestParam UUID id) {
+        User user = userService.getById(id);
+        return userService.activate(user);
     }
 
     @PostMapping(value="register")
@@ -48,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping(value="home")
-    public java.lang.String Home(){
+    public String Home(){
         return "Hey home";
     }
 }
