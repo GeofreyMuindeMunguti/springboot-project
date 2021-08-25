@@ -13,4 +13,5 @@ public interface AuthService {
      AuthToken saveToken(AuthToken authToken);
 
      List<AuthToken> getByUser(User user);
+
 }
