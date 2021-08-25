@@ -44,6 +44,11 @@ public class UserController {
         return userService.activate(user);
     }
 
+    @GetMapping("/me")
+    public User loggedInUserDetails(){
+        return userService.instance();
+    }
+
     @PostMapping(value="register")
     public User create(
             @Validated(User.Create.class)
