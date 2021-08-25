@@ -3,7 +3,7 @@ package com.example.hertz.services;
 import com.example.hertz.models.User;
 import org.springframework.data.domain.Page;
 
-import java.awt.print.Pageable;
+import java.util.UUID;
 
 public interface UserService {
     Page<User> getAll(Integer page);
@@ -12,4 +12,9 @@ public interface UserService {
 
     User findByUsername(String username);
 
+    User activate(User user);
+
+    User instance();
+
+    User getById(UUID id);
 }

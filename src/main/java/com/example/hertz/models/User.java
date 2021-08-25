@@ -64,6 +64,10 @@ public class User {
         this.roles = roles;
     }
 
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
     public User() {
     }
 

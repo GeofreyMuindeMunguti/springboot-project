@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Authentication
         http
                 .authorizeRequests()
-                .antMatchers("/", "/auth/login", "/users/register", "/users/home").permitAll() // URLS not requiring authentication
+                .antMatchers("/", "/auth/login", "/users/register", "/users/activate", "/users/home").permitAll() // URLS not requiring authentication
                 .anyRequest().authenticated() // (4)
                 .and()
                 .formLogin() // (5)
