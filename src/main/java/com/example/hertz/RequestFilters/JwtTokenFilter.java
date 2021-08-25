@@ -1,12 +1,14 @@
 package com.example.hertz.RequestFilters;
 import com.example.hertz.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -37,9 +39,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                logger.warn("Unable to get JWT Token");
             } catch (Exception e) {
-                System.out.println("JWT Token has expired");
+                logger.warn("JWT Token has expired");
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
@@ -50,6 +52,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = this.userService.loadUserByUsername(username);
 
+            // Check if the user is enabled, if disabled, dont allow the user to access the API.
+            if(!userDetails.isEnabled()) {
+                logger.warn("Deactivated user"+ userDetails.getUsername() +"tried to access the API");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "You have been deactivated");
+            }
+
+            // Validate the token
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
