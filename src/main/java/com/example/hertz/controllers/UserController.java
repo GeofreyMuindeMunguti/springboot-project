@@ -26,7 +26,6 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PreAuthorize("hasRole('Editor')")
     @GetMapping()
     public Page<User> getAll(@RequestParam(defaultValue = "0") Integer page){
         return userService.getAll(page);
