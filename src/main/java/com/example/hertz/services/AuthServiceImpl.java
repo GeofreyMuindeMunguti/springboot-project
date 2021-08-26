@@ -6,7 +6,6 @@ import com.example.hertz.models.User;
 import com.example.hertz.repositories.AuthTokenRepository;
 import com.example.hertz.schemas.UserLoginRequest;
 import com.example.hertz.schemas.UserLoginResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,17 +18,20 @@ import java.util.List;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    @Autowired
-    public UserService userService;
+    public final UserService userService;
 
-    @Autowired
-    public PasswordEncoder passwordEncoder;
+    public final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public JwtTokenUtil jwtTokenUtil;
+    public final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    public AuthTokenRepository authTokenRepository;
+    public final AuthTokenRepository authTokenRepository;
+
+    public AuthServiceImpl(UserService userService, PasswordEncoder passwordEncoder, JwtTokenUtil jwtTokenUtil, AuthTokenRepository authTokenRepository) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.authTokenRepository = authTokenRepository;
+    }
 
     @Override
     public UserLoginResponse authenticate (UserLoginRequest request) {
