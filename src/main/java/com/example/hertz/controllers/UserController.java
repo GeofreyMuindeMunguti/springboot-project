@@ -2,35 +2,33 @@ package com.example.hertz.controllers;
 
 import com.example.hertz.models.Role;
 import com.example.hertz.models.User;
-import com.example.hertz.services.MyUserPrincipal;
 import com.example.hertz.services.RoleService;
 import com.example.hertz.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "users")
 public class UserController {
-    @Autowired
-    private UserService userService;
 
-    @Autowired
-    private RoleService roleService;
+    private final UserService userService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
+
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     @Secured({"ROLE_ADMIN"})
     @GetMapping()

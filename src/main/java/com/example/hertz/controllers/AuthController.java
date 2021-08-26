@@ -4,7 +4,6 @@ package com.example.hertz.controllers;
 import com.example.hertz.schemas.UserLoginRequest;
 import com.example.hertz.schemas.UserLoginResponse;
 import com.example.hertz.services.AuthServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +12,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "auth")
 public class AuthController {
 
-    @Autowired
-    private AuthServiceImpl authService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthServiceImpl authService;
+
+    private final AuthenticationManager authenticationManager;
+
+    public AuthController(AuthServiceImpl authService, AuthenticationManager authenticationManager) {
+        this.authService = authService;
+        this.authenticationManager = authenticationManager;
+    }
 
 
     @PostMapping("login")

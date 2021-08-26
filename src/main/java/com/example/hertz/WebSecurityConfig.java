@@ -5,7 +5,6 @@ import com.example.hertz.services.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -50,7 +49,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Authentication
         http
                 .authorizeRequests()
-                .antMatchers("/", "/auth/login", "/users/register", "/users/activate", "/users/home").permitAll() // URLS not requiring authentication
+                .antMatchers("/",
+                        "/auth/login",
+                        "/users/register",
+                        "/users/activate",
+                        "/users/home").permitAll() // URLS not requiring authentication
                 .anyRequest().authenticated() // (4)
                 .and()
                 .formLogin() // (5)
